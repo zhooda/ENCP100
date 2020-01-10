@@ -16,13 +16,18 @@ classdef StorageObject
         end
         function disp(self)
             fprintf(self.name)
+        end
         function name = getName(self)
             name = self.name
+        end
         function totalSlots = getTotalSlots(self)
             totalSlots = self.slotsTotal
+        end
         function usedSlots = getUsedSlots(self)
             self.slotsUsed = 0
             for i = 1:length(self.storedItems)
                 self.slotsUsed += self.storedItems(i).get
+            end
+        end
     end
 end
