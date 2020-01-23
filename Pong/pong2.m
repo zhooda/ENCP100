@@ -16,7 +16,7 @@ window.KeyPressFcn = @keyboardFunction;
 axis = axes;
 axis.Color = 'black';
 axis.XLim = [0 100];
-axis.YLim = [-5 100];
+axis.YLim = [0 100];
 axis.XTick = [];
 axis.YTick = [];
 axis.Position = [.1 .1 .8 .8];
@@ -48,6 +48,7 @@ rightScoreTitle.FontSize = 14;
 
 ballPos = [50, 45];
 ballVel = [1, 1];
+speeds = [-1, 1];
 
 ball = line;
 ball.LineWidth = 20;
@@ -75,7 +76,7 @@ rightPaddle.XData = [100 100];
 rightPaddle.YData = [rightPaddleCenter - 8, rightPaddleCenter + 8];
 rightPaddle.LineWidth = 6;
 rightPaddle.Color = 'white';
-
+ 
 % ------------------------------ Loop ------------------------------- %
 
 while 1
@@ -84,17 +85,39 @@ while 1
    tic;
    
    % top and bottom collision
-   if ballPos(2) <= -5 || ballPos(2) >= 100
-      ballVel(2) = -ballVel(2); 
+   if ballPos(2) < 0 || ballPos(2) > 100
+       ballVel(2) = -ballVel(2); 
    end
-   if ballPos(1) <= 0
+   
+
+   if ballPos(1) < 0
        ballPos = [50 50];
-       ballVel = [1, 1];
+       rx = speeds(randi(2));
+       ry = speeds(randi(2));
+       ballVel = [rx ry];
        leftScore = leftScore + 1;
-   elseif ballPos(1) >= 100
-       ballPos = [50, 50];
-       ballVel = [-1, 1];
+       speeds = [-1 1]
+   end
+    
+   if ballPos(1) >= 100
+       ballPos = [50 50];
+       rx = speeds(randi(2));
+       ry = speeds(randi(2));
+       ballVel = [rx ry];
        rightScore = rightScore + 1;
+       speeds = [-1 1]
+   end
+    
+   if abs(ballPos(2) - leftPaddleCenter) < 8 && ballPos(1) < 2
+       ballVel(1) = -ballVel(1);
+       speeds = 1.007 * speeds
+%        ballVel(2) = -ballVel(2);
+   end
+   
+   if abs(ballPos(2) - rightPaddleCenter) < 8 && ballPos(1) > 98
+       ballVel(1) = -ballVel(1);
+       speeds = 1.007 * speeds
+%        ballVel(2) = -ballVel(2);
    end
    
    ballPos = ballPos + ballVel;
@@ -102,7 +125,8 @@ while 1
    ball.XData = ballPos(1);
    ball.YData = ballPos(2);
    
-   leftPaddle.YData = [ballPos(2) - 8, ballPos(2) + 8];
+   leftPaddleCenter = ballPos(2);
+   leftPaddle.YData = [leftPaddleCenter - 8, leftPaddleCenter + 8];
    rightPaddle.YData = [rightPaddleCenter - 8, rightPaddleCenter + 8];
    
    leftScoreLabel.String = num2str(leftScore);
@@ -120,8 +144,8 @@ function keyboardFunction(figure, event)
     
 %     if strcmp(event.Key, 'w'), leftPaddleCenter = leftPaddleCenter + 5; end
 %     if strcmp(event.Key, 's'), leftPaddleCenter = leftPaddleCenter - 5; end
-    if strcmp(event.Key, 'uparrow'), rightPaddleCenter = rightPaddleCenter + 5; end
-    if strcmp(event.Key, 'downarrow'), rightPaddleCenter = rightPaddleCenter - 5; end
+    if strcmp(event.Key, 'uparrow'), rightPaddleCenter = rightPaddleCenter + 8; end
+    if strcmp(event.Key, 'downarrow'), rightPaddleCenter = rightPaddleCenter - 8; end
     
     if strcmp(event.Key, 'escape'), close all; return; end
     

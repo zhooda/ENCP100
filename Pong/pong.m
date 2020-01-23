@@ -44,7 +44,7 @@ while toc < 100
         ballVel(2) = -ballVel(2);
     end
     
-    if ballPos(2) < 0
+    if ballPos(2) < 0s
         ballPos = [50, 50];
         ballVel = [1, 1];
         score = score + 1;
