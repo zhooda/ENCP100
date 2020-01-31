@@ -125,7 +125,7 @@ while 1
    ball.XData = ballPos(1);
    ball.YData = ballPos(2);
    
-   leftPaddleCenter = ballPos(2);
+%    leftPaddleCenter = ballPos(2);
    leftPaddle.YData = [leftPaddleCenter - 8, leftPaddleCenter + 8];
    rightPaddle.YData = [rightPaddleCenter - 8, rightPaddleCenter + 8];
    
@@ -139,11 +139,11 @@ end
 % ---------------------------- Functions ---------------------------- %
 
 function keyboardFunction(figure, event)
-%     global leftPaddleCenter;
+    global leftPaddleCenter;
     global rightPaddleCenter;
     
-%     if strcmp(event.Key, 'w'), leftPaddleCenter = leftPaddleCenter + 5; end
-%     if strcmp(event.Key, 's'), leftPaddleCenter = leftPaddleCenter - 5; end
+    if strcmp(event.Key, 'w'), leftPaddleCenter = leftPaddleCenter + 8; end
+    if strcmp(event.Key, 's'), leftPaddleCenter = leftPaddleCenter - 8; end
     if strcmp(event.Key, 'uparrow'), rightPaddleCenter = rightPaddleCenter + 8; end
     if strcmp(event.Key, 'downarrow'), rightPaddleCenter = rightPaddleCenter - 8; end
     
